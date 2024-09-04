@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admit Card and Image Capture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+        }
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        th h3, th h4 {
+            margin: 0;
+        }
+        td img {
+            display: block;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+            background-color: grey;
+            color: white;
+            padding: 10px;
+            margin: 0;
+        }
+        .centered h3 {
+            text-align: center;
+            margin: 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid black;
+            display: inline-block;
+        }
+        .barcode {
+            margin-top: 20px;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        ol {
+            font-size: 14px;
+        }
+        ul {
+            font-size: 14px;
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .note {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #barcode {
+            margin-bottom: 20px;
+            border: 1px solid #000;
+            padding: 10px;
+            font-family: "Libre Barcode 128", cursive;
+            font-size: 50px;
+            width: 100%;
+            text-align: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .image-container div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-container img {
+            max-width: 300px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        #capture-button {
+            margin-top: 10px;
+        }
+        .note {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="admitCardForm">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="rollNo">Roll No.: </label>
+        <input type="text" id="rollNo" name="rollNo"><br><br>
+
+        <label for="applicationId">Application ID: </label>
+        <input type="text" id="applicationId" name="applicationId"><br><br>
+
+        <label for="dob">Date of Birth: </label>
+        <input type="date" id="dob" name="dob"><br><br>
+
+        <label for="category">Category: </label>
+        <input type="text" id="category" name="category"><br><br>
+
+        <label for="centreCode">Centre Code: </label>
+        <input type="text" id="centreCode" name="centreCode"><br><br>
+
+        <label for="examCentre">Examination Centre: </label>
+        <input type="text" id="examCentre" name="examCentre"><br><br>
+
+        <label for="centreAddress">Centre Address: </label>
+        <input type="text" id="centreAddress" name="centreAddress" placeholder="Centre Address"><br><br>
+
+        <label for="googleMapLink">Google Map Link: </label>
+        <input type="text" id="googleMapLink" name="googleMapLink" placeholder="Google Map Link"><br><br>
+
+        <label for="dateOfExam">Date of Examination: </label>
+        <input type="date" id="dateOfExam" name="dateOfExam"><br><br>
+
+        <label for="reportTime">Reporting Time: </label>
+        <input type="time" id="reportTime" name="reportTime"><br><br>
+
+        <label for="entryCloseTime">Entry Close Time: </label>
+        <input type="time" id="entryCloseTime" name="entryCloseTime"><br><br>
+
+        <label for="examTimings">Examination Timings: </label>
+        <input type="text" id="examTimings" name="examTimings" placeholder="Exam Timings (e.g., 09:00 AM to 12:30 PM)"><br><br>
+        
+        
+    
+        <div class="image-container">
+            <div>
+                <h3>Capture Live Image</h3>
+                <video id="camera" width="300" height="300" autoplay></video>
+                <button type="button" id="capture-button">Capture</button>
+                <img id="captured-image" src="#" alt="Captured Image">
+            </div>
+            <div>
+                <h3>Select Image from Storage</h3>
+                <input type="file" id="image-input" accept="image/*">
+                <img id="selected-image" src="#" alt="Selected Image">
+            </div>
+        </div>
+        <script>// Handle Image Selection from Storage
+            
+    
+            imageInput.addEventListener('change', function() {
+                const file = imageInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        selectedImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        </script>
+        <button type="button" onclick="generateAdmitCard()">Generate Admit Card</button>
+    </form>
+
+    <div id="admitCard" style="display:none;">
+        <table>
+            <tr>
+                <td><img src="https://nbe.edu.in/nbenewlogo.png" alt="Logo" width="200" height="200"></td>
+                <th>
+                    <h3>आयुर्विज्ञान में राष्ट्रीय परीक्षा बोर्ड</h3>
+                    <h4>(स्वास्थ्य एवं परिवार कल्याण मंत्रालय, भारत सरकार के अधीन एक स्वायत्त निकाय)</h4>
+                    <h3>NATIONAL BOARD OF EXAMINATIONS IN MEDICAL SCIENCES</h3>
+                    <h4>(Autonomous Body under Ministry of Health and Family Welfare, Govt. of India)</h4>
+                    <h4>महात्मा गांधी मार्ग (रिंग रोड), अंसारी नगर, नई दिल्ली- 110029</h4>
+                    <h4>Mahatma Gandhi Marg (Ring Road), Ansari Nagar, New Delhi -110029</h4>
+                </th>
+            </tr>
+        </table>
+        <h2>National Eligibility Cum Entrance Test (NEET) - PG 2024</h2>
+        <div class="centered">
+            <h3 ><u>प्रवेश पत्र / Admit Card</u></h3>
+        </div>
+        <div id="barcode">123456789012</div>
+        <table>
+            <tr>
+                <td>
+                    <img id="admitCardImage" src="image.png" alt="Candidate Image" width="200" height="200">
+                    
+                </td>
+                <td>
+                    <img id="selectedImageSrc" src="image.png"  alt="Candidate Image" width="200" height="200">
+                    
+                </td>
+            </tr>
+        </table>
+        <table class="info-table">
+            <tr>
+                <th>नाम Name</th>
+                <td id="displayName">MUDIAM SAI NATHA REDDY</td>
+            </tr>
+            <tr>
+                <th>अनुक्रमांक Roll No.</th>
+                <td id="displayRollNo">2461000560</td>
+            </tr>
+            <tr>
+                <th>आवेदन आईडी Application ID</th>
+                <td id="displayApplicationId">PG24088575</td>
+            </tr>
+            <tr>
+                <th>जन्म तिथि Date of Birth</th>
+                <td id="displayDob">09-07-1999</td>
+            </tr>
+            <tr>
+                <th>राष्ट्रीयता Nationality</th>
+                <td>INDIAN</td>
+            </tr>
+            <tr>
+                <th>श्रेणी Category</th>
+                <td id="displayCategory">GENERAL</td>
+            </tr>
+            <tr>
+                <th>दिव्यांग Person with Disability</th>
+                <td>NO</td>
+            </tr>
+            <tr>
+                <th>केंद्र कोड Centre Code</th>
+                <td id="displayCentreCode">2033</td>
+            </tr>
+            <tr>
+                <th>परीक्षा केंद्र Examination Centre</th>
+                <td id="displayExamCentre">Kandula Obul Reddy Memorial College of Engineering Kadapa</td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <th>पता का केंद्रपरीक्षा Centre Address</th>
+                            <td id="displayCentreAddress">Kandula Obul Reddy Memorial College of Engineering Kadapa</td>
+                            <td rowspan="4">
+                                <img src="C:\Users\PURUPRANEETH REDDY\Downloads\sign.png" alt="Signature" width="100">
+                                <br>अपर निदेशक (चिकित्सा)।
+                                Additional Director (Medical) 
+                            </td>
+                        </tr>
+                       
+                    </table>
+                        <tr>
+                            <td>This Google map location of the test centre is only for reference. The candidates are required to confirm the location of the test centre with the address of the test centre indicated above. In case of any discrepancy in the location shown through the google map link, kindly treat the address of the test centre as valid location of the test centre.</td>
+                        </tr>
+                        
+                                    <tr>
+                                        <th>Date of Examination</th>
+                                        <th>Reporting at Examination Centre Starts at *</th>
+                                        <th>Entry to Exam Centre Close at</th>
+                                        <th>Examination Timings</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="displayDateOfExam"></td>
+                                        <td id="displayReportTime"></td>
+                                        <td id="displayEntryCloseTime"></td>
+                                        <td id="displayExamTimings"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            सुबाह 8:30 बजे के बाद किसी भी परिस्थिति में प्रवेश नहीं दिया जाएगा। | No entry in the exam centre after 08:30 AM under any circumstances.
+                                        </td>
+                                    </tr>
+                                
+                            </td>
+                        </tr>
+                    </table>
+        
+        <h2>महत्वपूर्ण निर्देश</h2>
+        <ol>
+            <li>मह एडमिट कार्ड इस शर्त के अधीन है कि यदि किसी भी स्तर पर अधोन्यता पाई जाती है, तो उम्मीदवारी रद्द कर दी जाएगी।</li>
+            <li>उम्मीदवारों को परीक्षा केंद्र में निम्नलिखित दस्तावेज लाने होंगे। इन दस्तावेजों के बिना परीक्षा हॉल में प्रवेश की अनुमति नहीं है।
+                <ul>
+                    <li>सरकार द्वारा जारी फोटो पहचान पत्र (मूल और वैध/समाप्त न हुआ होना चाहिए। मैन कार्ड, वोटर आईडी/पासपोर्ट/ ड्राइविंग लाइसेंस / आधार कार्ड (फोटो के साथ]।</li>
+                    <li>प्रवेश पत्र की मुद्रित प्रति।</li>
+                    <li>डिजिलोंकर में संग्रहीत दस्तावेज़ परीक्षा केंद्र के अंदर नहीं दिखाए जा सकते हैं।</li>
+                    <li>स्थायी/ अनंतिम एसएमसी/ एमसी आई/ एनएमसी पंजीकरण की फोटोकॉपी, जिसे परीक्षा केंद्र द्वारा रखा जाना है।</li>
+                </ul>
+            </li>
+            <li>कृपया परीक्षा के दौरान शांति और अनुशासन बनाए रखें।</li>
+            <li>किसी भी अनुचित साधनया अनुचित आचरण का उपयोग करने पर उम्मीदवार को परीक्षा से वंचित कर दिया जाएगा।</li>
+            <li>परीक्षा रथत पर सेल फोन, पेजर, कैलकुलेटर, पेन ड्राइव, टेबलेट सहित राभी इलेक्ट्रॉनिक उपकरणों का उपयोग सख्त वर्जित है।</li>
+            <li>संभावित प्रतिरूपण के खिलाफ जांच करने के लिए अधिकारी परीक्षा केंद्र पर उम्मीदवार की तस्वीर, अंगूठे का निशान या किसी अन्य माध्यम से उसकी पहचान और वास्तविकता की पुष्टि करेंगे।</li>
+            <li>अभ्यर्थी को परीक्षा केंद्र में देर से प्रवेश करने या जल्दी बाहर निकलने की अनुमति नहीं है।</li>
+            <li>प्रत्येक अभ्मर्यों को परीक्षा देते समय कंप्यूटर स्क्रीन पर प्रदर्शित निर्देशों का पालन करना होगा।</li>
+            <li>परीक्षा केंद्र पर निषिद्ध वस्तुओं की सूची:
+                <ul>
+                    <li>कोई भी स्टेशनरी आइटम जेसे पाठ्य सामग्री (मुद्रित मा लिखिता, नोट्स, प्लास्टिक पाउच, केलकुलेटर, पेन, राइटिंग पैड, पेन ड्राइव, इरेज़र, रफ पेपर आदि।</li>
+                    <li>कोई भी इलेक्ट्रॉनिक उपकरण जैसे मोबाइल फोन, ब्लूटूथ, इयरालेन, माइक्रोफोन, पेजर, कलाई घड़ी/स्वास्थ्य बेंड, कैलकुलेटर, इलेक्ट्रॉनिक पेन/एकेनर आदि।</li>
+                    <li>सभी आभूषण जैरो कंगन, अंगूठी, सुमके, नाक की पिन, पेन/हार, पेंडेंट, पेंडेंट के साथ हार, बेज, ब्रोच आदि।</li>
+                    <li>अन्य सामान जेरो बटुआ, चश्मा हैंडबैग, बेल्ट, टोपी, दस्ताने आदि।</li>
+                    <li>कोई भी खुती या पैक की गई खाद्य सामग्री, शीतल पेय, पानी की बोतलें आदि।</li>
+                    <li>कोई अन्य वस्तु जिसका उपयोग अनुचित साधनों के लिए वायरलेस, ब्लूटूथ डिवाइस, जासूसी कैमरा आदि जैसे संचार उपकरणों को छिपाने के लिए किया जा सकता है।</li>
+                </ul>
+            </li>
+            <li>उम्मीदवारों से संबंधित किसी भी वस्तु को रखने के लिए केंद्रो पर कोई व्यवस्था नहीं की जाएगी।</li>
+            <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा के लिए उंगती बायोमेट्रिक आधारित पंजीकरण में कठिनाइयों से बचने के लिए अपनी उंगलियों पर मेहंदी/रंगों से टैटू न बनजाएं।</li>
+            <li>यदि आपको परीक्षा केंद्र पर कोई दवा या चिकित्सा सहायता उपकरण ले जाने की आवश्यकता है, तो कृपया सहायक चिकित्सा दस्तानेज साध रखें।</li>
+            <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा से एक दिन पहले केंद्र के स्थानों से खुद को परिचित कर लें ताकि परीक्षा केंद्र पर देर से पहुंचने की किसी भी संभावना से बचा जा सके।</li>
+            <li>यदि आपको किसी लेखक की सहायता की आवश्यकता हो, तो कृपमा आरभी डब्ल्यूडी अधिनियम, 2016 के प्रावधानों के अनुसार दस्तावेजों के साथ एनबीईएमएस संचार वेब पोर्टल पर एक प्रश्न प्रस्तुत करके एनबीईएमपरा की पूर्व स्वीकृति प्राप्त करें।</li>
+            <li>सभी उम्मीदवारों को एडमिट कार्ड को ध्यान से देखना होगा और क्सिंगशियों, यदि कोई हो, की सूचना एनबीईएमएस को इसके संचार वेब पोर्टल (सीडब्ल्यूपी) पर देनी होगी।</li>
+        </ol>
+        <p class="note">नोट: एडमिट कार्ड जिसमें 2 पृष्ठ हों, उसे एक ही ए4 साइज के सफेद कागज पर मुद्रित करना अनिवार्य है (बैक टू बैक)।</p>
+        <h2>IMPORTANT INSTRUCTIONS</h2>
+        <ul>
+            <li>1. This admit card is subject to the condition that if ineligibility is detected at any stage, the candidature shall be cancelled.</li>
+            <li>2. Candidates must bring to the test centre the following documents. Entry to the examination hall without these documents is not permitted:
+                <ul>
+                    <li>Printed copy of admit card.</li>
+                    <li>A Government issued photo ID (must be original and valid/non-expired): PAN card / Voter ID /Passport/ Driving license / Aadhar card (with Photograph). Government issued photo ID MUST be produced in ORIGINAL HARD COPY. Photocopies/ Scanned copies in mobile phones are NOT acceptable. As candidates cannot carry the mobile device inside the test centre, documents stored in digilocker cannot be shown inside the test centre.</li>
+                    <li>Photocopy of Permanent/ Provisional SMC/MCI/NMC registration, to be retained by the test centre.</li>
+                </ul>
+            </li>
+            <li>3. Please maintain silence and discipline during the examination. Should you require any assistance during examination, please raise your hand to call the invigilator. Under no circumstance that a candidate should speak to other candidates while the examination is ongoing.</li>
+            <li>4. Use of any unfair means or improper conduct will lead to debarment of the candidate from the examination. This may also invite action against him/her as per Unfair Means Guidelines prescribed by NBEMS.</li>
+            <li>5. Use of all electronic devices, including cell phones, pagers, calculators, pen drives, tablets, is STRICTLY prohibited at the examination venue. Candidate found in possession is liable for action. Since examination centres do not have a provision for safekeeping of such devices, candidates are advised not to carry them to the examination venue. You must not also carry pens and pencils. A digital normal calculator shall be provided in the candidate's computer screen.</li>
+            <li>6. To check against possible impersonation, authorities will be verifying the identity and genuineness of a candidate by taking their photograph, thumb impression or by any other means at the examination centre. NBEMS may check the spectacles, any medical devices, unusual accessories carried by the candidates at examination centre for any possible hidden electronic devices.</li>
+            <li>7. The candidate is not permitted to make a late entry or exit early from the examination centre.</li>
+            <li>8. Each candidate must follow instructions displayed on the computer screen while taking the examination.</li>
+            <li>9. List of prohibited items at the test centre:
+                <ul>
+                    <li>Any stationery item like textual material (printed or written), notes, plastic pouch, calculator, pen, writing pad, pen drives, eraser, rough paper etc.</li>
+                    <li>Any electronic device like mobile phone, Bluetooth, earphones, microphone, pager, wrist watch/health band, calculator, electronic pen/scanner etc.</li>
+                    <li>All ornaments like bracelets, ring, earrings, nose-pin, chain/necklace, pendants, necklace with pendants, badge, brooch etc.</li>
+                    <li>Other items like wallet, goggles, handbags, belt, cap, gloves etc.</li>
+                    <li>Any eatable item opened or packed, soft drinks, water bottles etc. Candidates will be provided with a water bottle at exam centre.</li>
+                    <li>Any other item which could be used for unfair means, for hiding communication devices like wireless/Bluetooth device, spy camera etc.</li>
+                </ul>
+            </li>
+            <li>10. No arrangement will be made at the centres for keeping any articles/Items belonging to the candidates.</li>
+            <li>11. Candidates are advised to refrain from tattooing their fingers with henna/colours to avoid difficulties in finger biometric based registration for the test.</li>
+            <li>12. Should you need to carry any medicine or a medical assistance device at the exam centre, please carry supportive medical documents. In absence of such documents, you shall not be permitted to carry such devices/ prosthesis/ medicine etc.</li>
+            <li>13. Candidates are advised to acquaint themselves with the locations of the centre one day prior to the examination to avoid any chances of late arrival to the exam centre.</li>
+            <li>14. Should you require any assistance of scribe, please seek prior approval of NBEMS by way of submitting a query at NBEMS Communication Web Portal along with documents in support as per provisions of RPWD Act, 2016. In absence of prior approval of NBEMS, you shall not be allowed to accompany a scribe with you inside the exam centre.</li>
+            <li>15. All candidates are required to go through the admit card carefully and report discrepancies, if any, to NBEMS at its communication web portal (CWP).</li>
+        </ul>
+        <p class="note">NOTE: The admit card containing 2 pages MUST be printed on a single A4 size white paper (BACK TO BACK).</p>
+    </body>
+    </div>
+
+    <script>
+        function generateAdmitCard() {
+            document.getElementById('displayName').innerText = document.getElementById('name').value;
+            document.getElementById('displayRollNo').innerText = document.getElementById('rollNo').value;
+            document.getElementById('displayApplicationId').innerText = document.getElementById('applicationId').value;
+            document.getElementById('displayDob').innerText = new Date(document.getElementById('dob').value).toLocaleDateString();
+            document.getElementById('displayCategory').innerText = document.getElementById('category').value;
+            document.getElementById('displayCentreCode').innerText = document.getElementById('centreCode').value;
+            document.getElementById('displayExamCentre').innerText = document.getElementById('examCentre').value;
+            document.getElementById('displayCentreAddress').innerText = document.getElementById('centreAddress').value;
+           
+            document.getElementById('displayDateOfExam').innerText = new Date(document.getElementById('dateOfExam').value).toLocaleDateString();
+            document.getElementById('displayReportTime').innerText = document.getElementById('reportTime').value;
+            document.getElementById('displayEntryCloseTime').innerText = document.getElementById('entryCloseTime').value;
+            document.getElementById('displayExamTimings').innerText = document.getElementById('examTimings').value;
+
+            const capturedImageSrc = document.getElementById('captured-image').src;
+            const selectedImageSrc = document.getElementById('selected-image').src;
+            if (capturedImageSrc && capturedImageSrc !== "#") {
+                document.getElementById('admitCardImage').src = capturedImageSrc;
+            } else if (selectedImageSrc && selectedImageSrc !== "#") {
+                document.getElementById('admitCardImage').src = selectedImageSrc;
+            }
+
+            document.getElementById('selectedImageSrc').src = selectedImageSrc;
+            
+
+            document.getElementById('admitCard').style.display = 'block';
+        }
+
+        const video = document.getElementById('camera');
+        const canvas = document.createElement('canvas');
+        const capturedImage = document.getElementById('captured-image');
+        const captureButton = document.getElementById('capture-button');
+        const selectedImage = document.getElementById('selected-image');
+        const imageInput = document.getElementById('image-input');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            });
+
+        captureButton.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            capturedImage.src = canvas.toDataURL('image/png');
+        });
+
+        imageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImage.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+    
+</body>
+</html>
