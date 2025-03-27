@@ -85,11 +85,23 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
         }
         .image-container div {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .image-container div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .image-container img {
             max-width: 300px;
@@ -100,56 +112,546 @@
         #capture-button {
             margin-top: 10px;
         }
-        .note {
-            font-weight: bold;
-            margin-top: 20px;
+        .form-group {
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #admitCard {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        #admitCard.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .info-table tr {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .info-table tr:nth-child(1) { animation-delay: 0.1s; }
+        .info-table tr:nth-child(2) { animation-delay: 0.2s; }
+        .info-table tr:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #admitCard, #admitCard * {
+                visibility: visible;
+            }
+            #admitCard {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap');
+        
+        #admitCard {
+            font-family: 'Noto Sans', Arial, sans-serif;
+            background: white;
+        }
+
+        .page {
+            position: relative;
+            border: 2px solid #2c3e50;
+            margin: 0 auto;
+            background: white;
+            padding: 1.5cm;
+        }
+
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid #95a5a6;
+            pointer-events: none;
+        }
+
+        .header-section {
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+        }
+
+        .candidate-info {
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .exam-details {
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .instructions-page {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .instructions-page h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 8px;
+            margin: 20px 0 15px 0;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            #admitCard {
+                width: 21cm;
+                min-height: 29.7cm;
+            }
+
+            .page {
+                page-break-after: always;
+                border: 12px solid #2c3e50;
+                padding: 1.5cm;
+                min-height: 29.7cm;
+                box-sizing: border-box;
+            }
+
+            .page::before {
+                border: 2px solid #95a5a6;
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+            }
+
+            .page:last-child {
+                page-break-after: avoid;
+            }
+
+            .header-section {
+                border-bottom: 2px solid #2c3e50;
+            }
+
+            .candidate-info table,
+            .exam-details table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .candidate-info td,
+            .exam-details td {
+                padding: 8px;
+                border-bottom: 1px solid #ecf0f1;
+            }
+
+            .instructions-page ol,
+            .instructions-page ul {
+                padding-left: 20px;
+            }
+
+            .instructions-page li {
+                margin-bottom: 6px;
+                text-align: justify;
+            }
+
+            .note {
+                border: 1px solid #bdc3c7;
+                padding: 10px;
+                margin: 15px 0;
+                text-align: center;
+                background: #f9f9f9;
+            }
+
+            h1, h2, h3 {
+                font-family: 'Noto Sans', Arial, sans-serif;
+            }
+
+            table {
+                font-size: 11pt;
+            }
+
+            th {
+                font-weight: 600;
+            }
+
+            .watermark {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-45deg);
+                font-size: 60px;
+                opacity: 0.1;
+                pointer-events: none;
+                z-index: 1000;
+            }
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #2c3e50;
+        }
+
+        .corner-decoration.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-decoration.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
 </head>
 <body>
-    <form id="admitCardForm">
-        <label for="name">Name: </label>
-        <input type="text" id="name" name="name"><br><br>
+    <h1 style="
+        text-align: center;
+        color: #2c3e50;
+        margin: 20px 0;
+        padding: 15px;
+        background: #ecf0f1;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 2em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: fadeInDown 0.5s ease-out;
+    ">HALL TICKET GENERATOR OF NEET</h1>
 
-        <label for="rollNo">Roll No.: </label>
-        <input type="text" id="rollNo" name="rollNo"><br><br>
+    <form id="admitCardForm" style="
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    ">
+        <div class="form-section" style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        ">
+            <div class="form-group">
+                <label for="name" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Name: </label>
+                <input type="text" id="name" name="name" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="applicationId">Application ID: </label>
-        <input type="text" id="applicationId" name="applicationId"><br><br>
+            <div class="form-group">
+                <label for="rollNo" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Roll No.: </label>
+                <input type="text" id="rollNo" name="rollNo" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="dob">Date of Birth: </label>
-        <input type="date" id="dob" name="dob"><br><br>
+            <div class="form-group">
+                <label for="applicationId" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Application ID: </label>
+                <input type="text" id="applicationId" name="applicationId" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="category">Category: </label>
-        <input type="text" id="category" name="category"><br><br>
+            <div class="form-group">
+                <label for="dob" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Date of Birth: </label>
+                <input type="date" id="dob" name="dob" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="centreCode">Centre Code: </label>
-        <input type="text" id="centreCode" name="centreCode"><br><br>
+            <div class="form-group">
+                <label for="category" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Category: </label>
+                <input type="text" id="category" name="category" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="examCentre">Examination Centre: </label>
-        <input type="text" id="examCentre" name="examCentre"><br><br>
+            <div class="form-group">
+                <label for="centreCode" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Centre Code: </label>
+                <input type="text" id="centreCode" name="centreCode" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="centreAddress">Centre Address: </label>
-        <input type="text" id="centreAddress" name="centreAddress" placeholder="Centre Address"><br><br>
+            <div class="form-group">
+                <label for="examCentre" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Examination Centre: </label>
+                <input type="text" id="examCentre" name="examCentre" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="googleMapLink">Google Map Link: </label>
-        <input type="text" id="googleMapLink" name="googleMapLink" placeholder="Google Map Link"><br><br>
+            <div class="form-group">
+                <label for="centreAddress" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Centre Address: </label>
+                <input type="text" id="centreAddress" name="centreAddress" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="dateOfExam">Date of Examination: </label>
-        <input type="date" id="dateOfExam" name="dateOfExam"><br><br>
+            <div class="form-group">
+                <label for="googleMapLink" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Google Map Link: </label>
+                <input type="text" id="googleMapLink" name="googleMapLink" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="reportTime">Reporting Time: </label>
-        <input type="time" id="reportTime" name="reportTime"><br><br>
+            <div class="form-group">
+                <label for="dateOfExam" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Date of Examination: </label>
+                <input type="date" id="dateOfExam" name="dateOfExam" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="entryCloseTime">Entry Close Time: </label>
-        <input type="time" id="entryCloseTime" name="entryCloseTime"><br><br>
+            <div class="form-group">
+                <label for="reportTime" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Reporting Time: </label>
+                <input type="time" id="reportTime" name="reportTime" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
 
-        <label for="examTimings">Examination Timings: </label>
-        <input type="text" id="examTimings" name="examTimings" placeholder="Exam Timings (e.g., 09:00 AM to 12:30 PM)"><br><br>
-        
-        
-    
+            <div class="form-group">
+                <label for="entryCloseTime" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Entry Close Time: </label>
+                <input type="time" id="entryCloseTime" name="entryCloseTime" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
+
+            <div class="form-group">
+                <label for="examTimings" style="
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #2c3e50;
+                    font-weight: 600;
+                ">Examination Timings: </label>
+                <input type="text" id="examTimings" name="examTimings" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                ">
+            </div>
+        </div>
+
+        <style>
+            .form-group input:focus {
+                border-color: #3498db;
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+                outline: none;
+            }
+            
+            .form-group input:hover {
+                border-color: #bdc3c7;
+            }
+
+            @media (max-width: 768px) {
+                .form-section {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
+
         <div class="image-container">
             <div>
                 <h3>Capture Live Image</h3>
@@ -177,217 +679,319 @@
                 }
             });
         </script>
-        <button type="button" onclick="generateAdmitCard()">Generate Admit Card</button>
+        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+            <button type="button" onclick="generateAdmitCard()">Generate Admit Card</button>
+            <button type="button" onclick="downloadAdmitCard()" style="background-color: #2980b9;">
+                Download Hall Ticket
+            </button>
+        </div>
     </form>
 
     <div id="admitCard" style="display:none;">
-        <table>
-            <tr>
-                <td><img src="https://nbe.edu.in/nbenewlogo.png" alt="Logo" width="200" height="200"></td>
-                <th>
-                    <h3>आयुर्विज्ञान में राष्ट्रीय परीक्षा बोर्ड</h3>
-                    <h4>(स्वास्थ्य एवं परिवार कल्याण मंत्रालय, भारत सरकार के अधीन एक स्वायत्त निकाय)</h4>
-                    <h3>NATIONAL BOARD OF EXAMINATIONS IN MEDICAL SCIENCES</h3>
-                    <h4>(Autonomous Body under Ministry of Health and Family Welfare, Govt. of India)</h4>
-                    <h4>महात्मा गांधी मार्ग (रिंग रोड), अंसारी नगर, नई दिल्ली- 110029</h4>
-                    <h4>Mahatma Gandhi Marg (Ring Road), Ansari Nagar, New Delhi -110029</h4>
-                </th>
-            </tr>
-        </table>
-        <h2>National Eligibility Cum Entrance Test (NEET) - PG 2024</h2>
-        <div class="centered">
-            <h3 ><u>प्रवेश पत्र / Admit Card</u></h3>
+        <div class="page">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            <div class="watermark">NEET 2024</div>
+            <div class="header-section">
+                <table>
+                    <tr>
+                        <td style="width: 20%;"><img src="https://nbe.edu.in/nbenewlogo.png" alt="Logo" width="100"></td>
+                        <th style="width: 80%;">
+                            <h3 style="margin: 0; font-size: 14px;">NATIONAL BOARD OF EXAMINATIONS IN MEDICAL SCIENCES</h3>
+                            <h4 style="margin: 5px 0; font-size: 12px;">(Autonomous Body under Ministry of Health and Family Welfare, Govt. of India)</h4>
+                            <h4 style="margin: 0; font-size: 12px;">NEET PG 2024</h4>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+
+            <h2 style="text-align: center; background-color: #2c3e50; color: white; padding: 5px; margin: 10px 0; font-size: 16px;">
+                ADMIT CARD
+            </h2>
+
+            <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                <div style="width: 48%;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                        <tr>
+                            <th style="text-align: left; padding: 5px;">Roll Number:</th>
+                            <td id="displayRollNo" style="padding: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; padding: 5px;">Name:</th>
+                            <td id="displayName" style="padding: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; padding: 5px;">Application ID:</th>
+                            <td id="displayApplicationId" style="padding: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; padding: 5px;">Date of Birth:</th>
+                            <td id="displayDob" style="padding: 5px;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; padding: 5px;">Category:</th>
+                            <td id="displayCategory" style="padding: 5px;"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="width: 48%; text-align: right;">
+                    <img id="admitCardImage" src="#" alt="Candidate Photo" style="width: 100px; height: 100px; border: 1px solid #000;">
+                </div>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px;">
+                <tr>
+                    <th style="text-align: left; padding: 5px;">Examination Centre:</th>
+                    <td id="displayExamCentre" style="padding: 5px;"></td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 5px;">Centre Address:</th>
+                    <td id="displayCentreAddress" style="padding: 5px;"></td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 5px;">Centre Code:</th>
+                    <td id="displayCentreCode" style="padding: 5px;"></td>
+                </tr>
+            </table>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px;">
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 5px;">Date of Examination</th>
+                    <th style="padding: 5px;">Reporting Time</th>
+                    <th style="padding: 5px;">Entry Closes</th>
+                    <th style="padding: 5px;">Exam Timing</th>
+                </tr>
+                <tr>
+                    <td id="displayDateOfExam" style="text-align: center; padding: 5px;"></td>
+                    <td id="displayReportTime" style="text-align: center; padding: 5px;"></td>
+                    <td id="displayEntryCloseTime" style="text-align: center; padding: 5px;"></td>
+                    <td id="displayExamTimings" style="text-align: center; padding: 5px;"></td>
+                </tr>
+            </table>
         </div>
-        <div id="barcode">123456789012</div>
-        <table>
-            <tr>
-                <td>
-                    <img id="admitCardImage" src="image.png" alt="Candidate Image" width="200" height="200">
+
+        <div class="page instructions-page">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            <div class="watermark">NEET 2024</div>
+            <div style="margin-top: 20px; font-size: 11px;">
+                <h2 style="font-size: 14px; color: #2c3e50; margin-bottom: 10px;">महत्वपूर्ण निर्देश</h2>
+                <ol style="margin: 0; padding-left: 20px;">
+                    <li>मह एडमिट कार्ड इस शर्त के अधीन है कि यदि किसी भी स्तर पर अधोन्यता पाई जाती है, तो उम्मीदवारी रद्द कर दी जाएगी।</li>
+                    <li>उम्मीदवारों को परीक्षा केंद्र में निम्नलिखित दस्तावेज लाने होंगे। इन दस्तावेजों के बिना परीक्षा हॉल में प्रवेश की अनुमति नहीं है।
+                        <ul>
+                            <li>सरकार द्वारा जारी फोटो पहचान पत्र (मूल और वैध/समाप्त न हुआ होना चाहिए। मैन कार्ड, वोटर आईडी/पासपोर्ट/ ड्राइविंग लाइसेंस / आधार कार्ड (फोटो के साथ]।</li>
+                            <li>प्रवेश पत्र की मुद्रित प्रति।</li>
+                            <li>डिजिलोंकर में संग्रहीत दस्तावेज़ परीक्षा केंद्र के अंदर नहीं दिखाए जा सकते हैं।</li>
+                            <li>स्थायी/ अनंतिम एसएमसी/ एमसी आई/ एनएमसी पंजीकरण की फोटोकॉपी, जिसे परीक्षा केंद्र द्वारा रखा जाना है।</li>
+                        </ul>
+                    </li>
+                    <li>कृपया परीक्षा के दौरान शांति और अनुशासन बनाए रखें।</li>
+                    <li>किसी भी अनुचित साधनया अनुचित आचरण का उपयोग करने पर उम्मीदवार को परीक्षा से वंचित कर दिया जाएगा।</li>
+                    <li>परीक्षा रथत पर सेल फोन, पेजर, कैलकुलेटर, पेन ड्राइव, टेबलेट सहित राभी इलेक्ट्रॉनिक उपकरणों का उपयोग सख्त वर्जित है।</li>
+                    <li>संभावित प्रतिरूपण के खिलाफ जांच करने के लिए अधिकारी परीक्षा केंद्र पर उम्मीदवार की तस्वीर, अंगूठे का निशान या किसी अन्य माध्यम से उसकी पहचान और वास्तविकता की पुष्टि करेंगे।</li>
+                    <li>अभ्यर्थी को परीक्षा केंद्र में देर से प्रवेश करने या जल्दी बाहर निकलने की अनुमति नहीं है।</li>
+                    <li>प्रत्येक अभ्मर्यों को परीक्षा देते समय कंप्यूटर स्क्रीन पर प्रदर्शित निर्देशों का पालन करना होगा।</li>
+                    <li>परीक्षा केंद्र पर निषिद्ध वस्तुओं की सूची:
+                        <ul>
+                            <li>कोई भी स्टेशनरी आइटम जेसे पाठ्य सामग्री (मुद्रित मा लिखिता, नोट्स, प्लास्टिक पाउच, केलकुलेटर, पेन, राइटिंग पैड, पेन ड्राइव, इरेज़र, रफ पेपर आदि।</li>
+                            <li>कोई भी इलेक्ट्रॉनिक उपकरण जैसे मोबाइल फोन, ब्लूटूथ, इयरालेन, माइक्रोफोन, पेजर, कलाई घड़ी/स्वास्थ्य बेंड, कैलकुलेटर, इलेक्ट्रॉनिक पेन/एकेनर आदि।</li>
+                            <li>सभी आभूषण जैरो कंगन, अंगूठी, सुमके, नाक की पिन, पेन/हार, पेंडेंट, पेंडेंट के साथ हार, बेज, ब्रोच आदि।</li>
+                            <li>अन्य सामान जेरो बटुआ, चश्मा हैंडबैग, बेल्ट, टोपी, दस्ताने आदि।</li>
+                            <li>कोई भी खुती या पैक की गई खाद्य सामग्री, शीतल पेय, पानी की बोतलें आदि।</li>
+                            <li>कोई अन्य वस्तु जिसका उपयोग अनुचित साधनों के लिए वायरलेस, ब्लूटूथ डिवाइस, जासूसी कैमरा आदि जैसे संचार उपकरणों को छिपाने के लिए किया जा सकता है।</li>
+                        </ul>
+                    </li>
+                    <li>उम्मीदवारों से संबंधित किसी भी वस्तु को रखने के लिए केंद्रो पर कोई व्यवस्था नहीं की जाएगी।</li>
+                    <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा के लिए उंगती बायोमेट्रिक आधारित पंजीकरण में कठिनाइयों से बचने के लिए अपनी उंगलियों पर मेहंदी/रंगों से टैटू न बनजाएं।</li>
+                    <li>यदि आपको परीक्षा केंद्र पर कोई दवा या चिकित्सा सहायता उपकरण ले जाने की आवश्यकता है, तो कृपया सहायक चिकित्सा दस्तानेज साध रखें।</li>
+                    <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा से एक दिन पहले केंद्र के स्थानों से खुद को परिचित कर लें ताकि परीक्षा केंद्र पर देर से पहुंचने की किसी भी संभावना से बचा जा सके।</li>
+                    <li>यदि आपको किसी लेखक की सहायता की आवश्यकता हो, तो कृपमा आरभी डब्ल्यूडी अधिनियम, 2016 के प्रावधानों के अनुसार दस्तावेजों के साथ एनबीईएमएस संचार वेब पोर्टल पर एक प्रश्न प्रस्तुत करके एनबीईएमपरा की पूर्व स्वीकृति प्राप्त करें।</li>
+                    <li>सभी उम्मीदवारों को एडमिट कार्ड को ध्यान से देखना होगा और क्सिंगशियों, यदि कोई हो, की सूचना एनबीईएमएस को इसके संचार वेब पोर्टल (सीडब्ल्यूपी) पर देनी होगी।</li>
+                </ol>
+
+                <h2 style="font-size: 14px; color: #2c3e50; margin: 15px 0 10px 0;">IMPORTANT INSTRUCTIONS</h2>
+                <ul style="margin: 0; padding-left: 20px; list-style-type: decimal;">
                     
-                </td>
-                <td>
-                    <img id="selectedImageSrc" src="image.png"  alt="Candidate Image" width="200" height="200">
-                    
-                </td>
-            </tr>
-        </table>
-        <table class="info-table">
-            <tr>
-                <th>नाम Name</th>
-                <td id="displayName">MUDIAM SAI NATHA REDDY</td>
-            </tr>
-            <tr>
-                <th>अनुक्रमांक Roll No.</th>
-                <td id="displayRollNo">2461000560</td>
-            </tr>
-            <tr>
-                <th>आवेदन आईडी Application ID</th>
-                <td id="displayApplicationId">PG24088575</td>
-            </tr>
-            <tr>
-                <th>जन्म तिथि Date of Birth</th>
-                <td id="displayDob">09-07-1999</td>
-            </tr>
-            <tr>
-                <th>राष्ट्रीयता Nationality</th>
-                <td>INDIAN</td>
-            </tr>
-            <tr>
-                <th>श्रेणी Category</th>
-                <td id="displayCategory">GENERAL</td>
-            </tr>
-            <tr>
-                <th>दिव्यांग Person with Disability</th>
-                <td>NO</td>
-            </tr>
-            <tr>
-                <th>केंद्र कोड Centre Code</th>
-                <td id="displayCentreCode">2033</td>
-            </tr>
-            <tr>
-                <th>परीक्षा केंद्र Examination Centre</th>
-                <td id="displayExamCentre">Kandula Obul Reddy Memorial College of Engineering Kadapa</td>
-            </tr>
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <th>पता का केंद्रपरीक्षा Centre Address</th>
-                            <td id="displayCentreAddress">Kandula Obul Reddy Memorial College of Engineering Kadapa</td>
-                            <td rowspan="4">
-                                <img src="C:\Users\PURUPRANEETH REDDY\Downloads\sign.png" alt="Signature" width="100">
-                                <br>अपर निदेशक (चिकित्सा)।
-                                Additional Director (Medical) 
-                            </td>
-                        </tr>
-                       
-                    </table>
-                        <tr>
-                            <td>This Google map location of the test centre is only for reference. The candidates are required to confirm the location of the test centre with the address of the test centre indicated above. In case of any discrepancy in the location shown through the google map link, kindly treat the address of the test centre as valid location of the test centre.</td>
-                        </tr>
-                        
-                                    <tr>
-                                        <th>Date of Examination</th>
-                                        <th>Reporting at Examination Centre Starts at *</th>
-                                        <th>Entry to Exam Centre Close at</th>
-                                        <th>Examination Timings</th>
-                                    </tr>
-                                    <tr>
-                                        <td id="displayDateOfExam"></td>
-                                        <td id="displayReportTime"></td>
-                                        <td id="displayEntryCloseTime"></td>
-                                        <td id="displayExamTimings"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">
-                                            सुबाह 8:30 बजे के बाद किसी भी परिस्थिति में प्रवेश नहीं दिया जाएगा। | No entry in the exam centre after 08:30 AM under any circumstances.
-                                        </td>
-                                    </tr>
-                                
-                            </td>
-                        </tr>
-                    </table>
-        
-        <h2>महत्वपूर्ण निर्देश</h2>
-        <ol>
-            <li>मह एडमिट कार्ड इस शर्त के अधीन है कि यदि किसी भी स्तर पर अधोन्यता पाई जाती है, तो उम्मीदवारी रद्द कर दी जाएगी।</li>
-            <li>उम्मीदवारों को परीक्षा केंद्र में निम्नलिखित दस्तावेज लाने होंगे। इन दस्तावेजों के बिना परीक्षा हॉल में प्रवेश की अनुमति नहीं है।
-                <ul>
-                    <li>सरकार द्वारा जारी फोटो पहचान पत्र (मूल और वैध/समाप्त न हुआ होना चाहिए। मैन कार्ड, वोटर आईडी/पासपोर्ट/ ड्राइविंग लाइसेंस / आधार कार्ड (फोटो के साथ]।</li>
-                    <li>प्रवेश पत्र की मुद्रित प्रति।</li>
-                    <li>डिजिलोंकर में संग्रहीत दस्तावेज़ परीक्षा केंद्र के अंदर नहीं दिखाए जा सकते हैं।</li>
-                    <li>स्थायी/ अनंतिम एसएमसी/ एमसी आई/ एनएमसी पंजीकरण की फोटोकॉपी, जिसे परीक्षा केंद्र द्वारा रखा जाना है।</li>
-                </ul>
-            </li>
-            <li>कृपया परीक्षा के दौरान शांति और अनुशासन बनाए रखें।</li>
-            <li>किसी भी अनुचित साधनया अनुचित आचरण का उपयोग करने पर उम्मीदवार को परीक्षा से वंचित कर दिया जाएगा।</li>
-            <li>परीक्षा रथत पर सेल फोन, पेजर, कैलकुलेटर, पेन ड्राइव, टेबलेट सहित राभी इलेक्ट्रॉनिक उपकरणों का उपयोग सख्त वर्जित है।</li>
-            <li>संभावित प्रतिरूपण के खिलाफ जांच करने के लिए अधिकारी परीक्षा केंद्र पर उम्मीदवार की तस्वीर, अंगूठे का निशान या किसी अन्य माध्यम से उसकी पहचान और वास्तविकता की पुष्टि करेंगे।</li>
-            <li>अभ्यर्थी को परीक्षा केंद्र में देर से प्रवेश करने या जल्दी बाहर निकलने की अनुमति नहीं है।</li>
-            <li>प्रत्येक अभ्मर्यों को परीक्षा देते समय कंप्यूटर स्क्रीन पर प्रदर्शित निर्देशों का पालन करना होगा।</li>
-            <li>परीक्षा केंद्र पर निषिद्ध वस्तुओं की सूची:
-                <ul>
-                    <li>कोई भी स्टेशनरी आइटम जेसे पाठ्य सामग्री (मुद्रित मा लिखिता, नोट्स, प्लास्टिक पाउच, केलकुलेटर, पेन, राइटिंग पैड, पेन ड्राइव, इरेज़र, रफ पेपर आदि।</li>
-                    <li>कोई भी इलेक्ट्रॉनिक उपकरण जैसे मोबाइल फोन, ब्लूटूथ, इयरालेन, माइक्रोफोन, पेजर, कलाई घड़ी/स्वास्थ्य बेंड, कैलकुलेटर, इलेक्ट्रॉनिक पेन/एकेनर आदि।</li>
-                    <li>सभी आभूषण जैरो कंगन, अंगूठी, सुमके, नाक की पिन, पेन/हार, पेंडेंट, पेंडेंट के साथ हार, बेज, ब्रोच आदि।</li>
-                    <li>अन्य सामान जेरो बटुआ, चश्मा हैंडबैग, बेल्ट, टोपी, दस्ताने आदि।</li>
-                    <li>कोई भी खुती या पैक की गई खाद्य सामग्री, शीतल पेय, पानी की बोतलें आदि।</li>
-                    <li>कोई अन्य वस्तु जिसका उपयोग अनुचित साधनों के लिए वायरलेस, ब्लूटूथ डिवाइस, जासूसी कैमरा आदि जैसे संचार उपकरणों को छिपाने के लिए किया जा सकता है।</li>
-                </ul>
-            </li>
-            <li>उम्मीदवारों से संबंधित किसी भी वस्तु को रखने के लिए केंद्रो पर कोई व्यवस्था नहीं की जाएगी।</li>
-            <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा के लिए उंगती बायोमेट्रिक आधारित पंजीकरण में कठिनाइयों से बचने के लिए अपनी उंगलियों पर मेहंदी/रंगों से टैटू न बनजाएं।</li>
-            <li>यदि आपको परीक्षा केंद्र पर कोई दवा या चिकित्सा सहायता उपकरण ले जाने की आवश्यकता है, तो कृपया सहायक चिकित्सा दस्तानेज साध रखें।</li>
-            <li>उम्मीदवारों को सलाह दी जाती है कि वे परीक्षा से एक दिन पहले केंद्र के स्थानों से खुद को परिचित कर लें ताकि परीक्षा केंद्र पर देर से पहुंचने की किसी भी संभावना से बचा जा सके।</li>
-            <li>यदि आपको किसी लेखक की सहायता की आवश्यकता हो, तो कृपमा आरभी डब्ल्यूडी अधिनियम, 2016 के प्रावधानों के अनुसार दस्तावेजों के साथ एनबीईएमएस संचार वेब पोर्टल पर एक प्रश्न प्रस्तुत करके एनबीईएमपरा की पूर्व स्वीकृति प्राप्त करें।</li>
-            <li>सभी उम्मीदवारों को एडमिट कार्ड को ध्यान से देखना होगा और क्सिंगशियों, यदि कोई हो, की सूचना एनबीईएमएस को इसके संचार वेब पोर्टल (सीडब्ल्यूपी) पर देनी होगी।</li>
-        </ol>
-        <p class="note">नोट: एडमिट कार्ड जिसमें 2 पृष्ठ हों, उसे एक ही ए4 साइज के सफेद कागज पर मुद्रित करना अनिवार्य है (बैक टू बैक)।</p>
-        <h2>IMPORTANT INSTRUCTIONS</h2>
-        <ul>
-            <li>1. This admit card is subject to the condition that if ineligibility is detected at any stage, the candidature shall be cancelled.</li>
-            <li>2. Candidates must bring to the test centre the following documents. Entry to the examination hall without these documents is not permitted:
-                <ul>
-                    <li>Printed copy of admit card.</li>
-                    <li>A Government issued photo ID (must be original and valid/non-expired): PAN card / Voter ID /Passport/ Driving license / Aadhar card (with Photograph). Government issued photo ID MUST be produced in ORIGINAL HARD COPY. Photocopies/ Scanned copies in mobile phones are NOT acceptable. As candidates cannot carry the mobile device inside the test centre, documents stored in digilocker cannot be shown inside the test centre.</li>
-                    <li>Photocopy of Permanent/ Provisional SMC/MCI/NMC registration, to be retained by the test centre.</li>
-                </ul>
-            </li>
-            <li>3. Please maintain silence and discipline during the examination. Should you require any assistance during examination, please raise your hand to call the invigilator. Under no circumstance that a candidate should speak to other candidates while the examination is ongoing.</li>
-            <li>4. Use of any unfair means or improper conduct will lead to debarment of the candidate from the examination. This may also invite action against him/her as per Unfair Means Guidelines prescribed by NBEMS.</li>
-            <li>5. Use of all electronic devices, including cell phones, pagers, calculators, pen drives, tablets, is STRICTLY prohibited at the examination venue. Candidate found in possession is liable for action. Since examination centres do not have a provision for safekeeping of such devices, candidates are advised not to carry them to the examination venue. You must not also carry pens and pencils. A digital normal calculator shall be provided in the candidate's computer screen.</li>
-            <li>6. To check against possible impersonation, authorities will be verifying the identity and genuineness of a candidate by taking their photograph, thumb impression or by any other means at the examination centre. NBEMS may check the spectacles, any medical devices, unusual accessories carried by the candidates at examination centre for any possible hidden electronic devices.</li>
-            <li>7. The candidate is not permitted to make a late entry or exit early from the examination centre.</li>
-            <li>8. Each candidate must follow instructions displayed on the computer screen while taking the examination.</li>
-            <li>9. List of prohibited items at the test centre:
-                <ul>
-                    <li>Any stationery item like textual material (printed or written), notes, plastic pouch, calculator, pen, writing pad, pen drives, eraser, rough paper etc.</li>
-                    <li>Any electronic device like mobile phone, Bluetooth, earphones, microphone, pager, wrist watch/health band, calculator, electronic pen/scanner etc.</li>
-                    <li>All ornaments like bracelets, ring, earrings, nose-pin, chain/necklace, pendants, necklace with pendants, badge, brooch etc.</li>
-                    <li>Other items like wallet, goggles, handbags, belt, cap, gloves etc.</li>
-                    <li>Any eatable item opened or packed, soft drinks, water bottles etc. Candidates will be provided with a water bottle at exam centre.</li>
-                    <li>Any other item which could be used for unfair means, for hiding communication devices like wireless/Bluetooth device, spy camera etc.</li>
-                </ul>
-            </li>
-            <li>10. No arrangement will be made at the centres for keeping any articles/Items belonging to the candidates.</li>
-            <li>11. Candidates are advised to refrain from tattooing their fingers with henna/colours to avoid difficulties in finger biometric based registration for the test.</li>
-            <li>12. Should you need to carry any medicine or a medical assistance device at the exam centre, please carry supportive medical documents. In absence of such documents, you shall not be permitted to carry such devices/ prosthesis/ medicine etc.</li>
-            <li>13. Candidates are advised to acquaint themselves with the locations of the centre one day prior to the examination to avoid any chances of late arrival to the exam centre.</li>
-            <li>14. Should you require any assistance of scribe, please seek prior approval of NBEMS by way of submitting a query at NBEMS Communication Web Portal along with documents in support as per provisions of RPWD Act, 2016. In absence of prior approval of NBEMS, you shall not be allowed to accompany a scribe with you inside the exam centre.</li>
-            <li>15. All candidates are required to go through the admit card carefully and report discrepancies, if any, to NBEMS at its communication web portal (CWP).</li>
-        </ul>
-        <p class="note">NOTE: The admit card containing 2 pages MUST be printed on a single A4 size white paper (BACK TO BACK).</p>
-    </body>
+                        <li>1. This admit card is subject to the condition that if ineligibility is detected at any stage, the candidature shall be cancelled.</li>
+                        <li>2. Candidates must bring to the test centre the following documents. Entry to the examination hall without these documents is not permitted:
+                            <ul>
+                                <li>Printed copy of admit card.</li>
+                                <li>A Government issued photo ID (must be original and valid/non-expired): PAN card / Voter ID /Passport/ Driving license / Aadhar card (with Photograph). Government issued photo ID MUST be produced in ORIGINAL HARD COPY. Photocopies/ Scanned copies in mobile phones are NOT acceptable. As candidates cannot carry the mobile device inside the test centre, documents stored in digilocker cannot be shown inside the test centre.</li>
+                                <li>Photocopy of Permanent/ Provisional SMC/MCI/NMC registration, to be retained by the test centre.</li>
+                            </ul>
+                        </li>
+                        <li>3. Please maintain silence and discipline during the examination. Should you require any assistance during examination, please raise your hand to call the invigilator. Under no circumstance that a candidate should speak to other candidates while the examination is ongoing.</li>
+                        <li>4. Use of any unfair means or improper conduct will lead to debarment of the candidate from the examination. This may also invite action against him/her as per Unfair Means Guidelines prescribed by NBEMS.</li>
+                        <li>5. Use of all electronic devices, including cell phones, pagers, calculators, pen drives, tablets, is STRICTLY prohibited at the examination venue. Candidate found in possession is liable for action. Since examination centres do not have a provision for safekeeping of such devices, candidates are advised not to carry them to the examination venue. You must not also carry pens and pencils. A digital normal calculator shall be provided in the candidate's computer screen.</li>
+                        <li>6. To check against possible impersonation, authorities will be verifying the identity and genuineness of a candidate by taking their photograph, thumb impression or by any other means at the examination centre. NBEMS may check the spectacles, any medical devices, unusual accessories carried by the candidates at examination centre for any possible hidden electronic devices.</li>
+                        <li>7. The candidate is not permitted to make a late entry or exit early from the examination centre.</li>
+                        <li>8. Each candidate must follow instructions displayed on the computer screen while taking the examination.</li>
+                        <li>9. List of prohibited items at the test centre:
+                            <ul>
+                                <li>Any stationery item like textual material (printed or written), notes, plastic pouch, calculator, pen, writing pad, pen drives, eraser, rough paper etc.</li>
+                                <li>Any electronic device like mobile phone, Bluetooth, earphones, microphone, pager, wrist watch/health band, calculator, electronic pen/scanner etc.</li>
+                                <li>All ornaments like bracelets, ring, earrings, nose-pin, chain/necklace, pendants, necklace with pendants, badge, brooch etc.</li>
+                                <li>Other items like wallet, goggles, handbags, belt, cap, gloves etc.</li>
+                                <li>Any eatable item opened or packed, soft drinks, water bottles etc. Candidates will be provided with a water bottle at exam centre.</li>
+                                <li>Any other item which could be used for unfair means, for hiding communication devices like wireless/Bluetooth device, spy camera etc.</li>
+                            </ul>
+                        </li>
+                        <li>10. No arrangement will be made at the centres for keeping any articles/Items belonging to the candidates.</li>
+                        <li>11. Candidates are advised to refrain from tattooing their fingers with henna/colours to avoid difficulties in finger biometric based registration for the test.</li>
+                        <li>12. Should you need to carry any medicine or a medical assistance device at the exam centre, please carry supportive medical documents. In absence of such documents, you shall not be permitted to carry such devices/ prosthesis/ medicine etc.</li>
+                        <li>13. Candidates are advised to acquaint themselves with the locations of the centre one day prior to the examination to avoid any chances of late arrival to the exam centre.</li>
+                        <li>14. Should you require any assistance of scribe, please seek prior approval of NBEMS by way of submitting a query at NBEMS Communication Web Portal along with documents in support as per provisions of RPWD Act, 2016. In absence of prior approval of NBEMS, you shall not be allowed to accompany a scribe with you inside the exam centre.</li>
+                        <li>15. All candidates are required to go through the admit card carefully and report discrepancies, if any, to NBEMS at its communication web portal (CWP).</li>
+                    </ul>
+
+                <p class="note" style="margin-top: 15px; font-weight: bold; font-size: 12px; text-align: center; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                    NOTE: The admit card containing 2 pages MUST be printed on a single A4 size white paper (BACK TO BACK).
+                </p>
+            </div>
+        </div>
     </div>
 
     <script>
-        function generateAdmitCard() {
-            document.getElementById('displayName').innerText = document.getElementById('name').value;
-            document.getElementById('displayRollNo').innerText = document.getElementById('rollNo').value;
-            document.getElementById('displayApplicationId').innerText = document.getElementById('applicationId').value;
-            document.getElementById('displayDob').innerText = new Date(document.getElementById('dob').value).toLocaleDateString();
-            document.getElementById('displayCategory').innerText = document.getElementById('category').value;
-            document.getElementById('displayCentreCode').innerText = document.getElementById('centreCode').value;
-            document.getElementById('displayExamCentre').innerText = document.getElementById('examCentre').value;
-            document.getElementById('displayCentreAddress').innerText = document.getElementById('centreAddress').value;
-           
-            document.getElementById('displayDateOfExam').innerText = new Date(document.getElementById('dateOfExam').value).toLocaleDateString();
-            document.getElementById('displayReportTime').innerText = document.getElementById('reportTime').value;
-            document.getElementById('displayEntryCloseTime').innerText = document.getElementById('entryCloseTime').value;
-            document.getElementById('displayExamTimings').innerText = document.getElementById('examTimings').value;
-
-            const capturedImageSrc = document.getElementById('captured-image').src;
-            const selectedImageSrc = document.getElementById('selected-image').src;
-            if (capturedImageSrc && capturedImageSrc !== "#") {
-                document.getElementById('admitCardImage').src = capturedImageSrc;
-            } else if (selectedImageSrc && selectedImageSrc !== "#") {
-                document.getElementById('admitCardImage').src = selectedImageSrc;
+        function downloadAdmitCard() {
+            const admitCard = document.getElementById('admitCard');
+            if (admitCard.style.display === 'none') {
+                alert('Please generate the admit card first!');
+                return;
             }
 
-            document.getElementById('selectedImageSrc').src = selectedImageSrc;
-            
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>NEET Hall Ticket</title>');
+            printWindow.document.write('<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">');
+            printWindow.document.write('<style>' + document.querySelector('style').innerHTML + '</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(admitCard.outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
 
-            document.getElementById('admitCard').style.display = 'block';
+            // Wait for fonts and images to load
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 1000);
+        }
+
+        function generateAdmitCard() {
+            // Validate form first
+            if (!validateForm()) {
+                alert('Please fill in all required fields and provide a photo');
+                return;
+            }
+
+            // Get all form values and update display
+            const fields = {
+                'name': 'displayName',
+                'rollNo': 'displayRollNo',
+                'applicationId': 'displayApplicationId',
+                'category': 'displayCategory',
+                'centreCode': 'displayCentreCode',
+                'examCentre': 'displayExamCentre',
+                'centreAddress': 'displayCentreAddress',
+                'examTimings': 'displayExamTimings'
+            };
+
+            // Update simple text fields
+            Object.keys(fields).forEach(field => {
+                const value = document.getElementById(field).value;
+                if (value) {
+                    document.getElementById(fields[field]).innerText = value;
+                }
+            });
+
+            // Handle date fields with proper formatting
+            const dateFields = ['dob', 'dateOfExam'];
+            dateFields.forEach(field => {
+                const value = document.getElementById(field).value;
+                if (value) {
+                    const date = new Date(value);
+                    const formattedDate = date.toLocaleDateString('en-IN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    document.getElementById('display' + field.charAt(0).toUpperCase() + field.slice(1)).innerText = formattedDate;
+                }
+            });
+
+            // Handle time fields with proper formatting
+            const timeFields = ['reportTime', 'entryCloseTime'];
+            timeFields.forEach(field => {
+                const value = document.getElementById(field).value;
+                if (value) {
+                    const time = new Date('1970-01-01T' + value);
+                    const formattedTime = time.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    document.getElementById('display' + field.charAt(0).toUpperCase() + field.slice(1)).innerText = formattedTime;
+                }
+            });
+
+            // Handle photo
+            const capturedImage = document.getElementById('captured-image');
+            const selectedImage = document.getElementById('selected-image');
+            const admitCardImage = document.getElementById('admitCardImage');
+
+            if (capturedImage.src !== '#' && capturedImage.src !== '') {
+                admitCardImage.src = capturedImage.src;
+            } else if (selectedImage.src !== '#' && selectedImage.src !== '') {
+                admitCardImage.src = selectedImage.src;
+            }
+
+            // Show the admit card
+            const admitCard = document.getElementById('admitCard');
+            admitCard.style.display = 'block';
+            
+            // Add animation class
+            setTimeout(() => {
+                admitCard.classList.add('visible');
+                // Scroll to admit card
+                admitCard.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+
+        function validateForm() {
+            const requiredFields = [
+                'name', 'rollNo', 'applicationId', 'dob', 'category', 
+                'centreCode', 'examCentre', 'centreAddress', 'dateOfExam', 
+                'reportTime', 'entryCloseTime', 'examTimings'
+            ];
+            
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#e0e0e0';
+                }
+            });
+
+            // Check for photo
+            const capturedImage = document.getElementById('captured-image').src;
+            const selectedImage = document.getElementById('selected-image').src;
+            if ((capturedImage === '#' || capturedImage === '') && 
+                (selectedImage === '#' || selectedImage === '')) {
+                alert('Please capture or select a photo');
+                isValid = false;
+            }
+
+            return isValid;
         }
 
         const video = document.getElementById('camera');
@@ -403,10 +1007,18 @@
             });
 
         captureButton.addEventListener('click', () => {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            capturedImage.src = canvas.toDataURL('image/png');
+            captureButton.innerHTML = 'Capturing...';
+            captureButton.disabled = true;
+            
+            setTimeout(() => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                capturedImage.src = canvas.toDataURL('image/png');
+                
+                captureButton.innerHTML = 'Capture';
+                captureButton.disabled = false;
+            }, 500);
         });
 
         imageInput.addEventListener('change', (event) => {
@@ -418,6 +1030,15 @@
                 }
                 reader.readAsDataURL(file);
             }
+        });
+
+        document.querySelector('button[onclick="generateAdmitCard()"]').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('admitCard').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 200);
         });
     </script>
 
